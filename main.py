@@ -38,7 +38,7 @@ async def startGame():
         if years >= 18:
             if years % 80 == 0:
                 global number_of_dead_people
-                number_of_dead_people = round(population * 0.007)
+                number_of_dead_people = round((available_males + available_females) * 0.56)
                 available_females -= (number_of_dead_people // 2)
                 available_males -= (number_of_dead_people // 2)
                 print(f'Dying People: {number_of_dead_people}')
