@@ -2,11 +2,10 @@ import random
 import asyncio
 
 SEXES = ['male', 'female']
-MIN_NUMBER_OF_CHILDREN = 1
-MAX_NUMBER_OF_CHILDREN = 3
+CHILDREN = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3]
 
 async def Breed():
-    children_produced = random.randint(MIN_NUMBER_OF_CHILDREN, MAX_NUMBER_OF_CHILDREN)
+    children_produced = int(random.choice(CHILDREN))
     current_child = 0
     males = 0
     females = 0
@@ -32,15 +31,20 @@ async def startGame():
     available_females = 1
     cache_females = []
     cache_males = []
+    second_cache_females = []
+    third_cache_females = []
 
     while population < 10000:
-        if years >= 20:
+        if years >= 18:
+            
             if len(cache_males) > 20:
-                available_females += cache_females[0]
+                available_males += cache_males[0]
                 cache_males.pop(0)
             if len(cache_females) > 20:
-                available_males += cache_males[0]
+                available_females += cache_females[0]
                 cache_females.pop(0)
+                available_females -= second_cache_females[0]
+                second_cache_females.pop(0)
             if available_males > available_females:
                 current_sex = 0
                 while current_sex < available_females:
@@ -52,20 +56,9 @@ async def startGame():
                     cache_females.append(girls)
                     print(number_of_children_produced)
                     current_sex += 1
-            elif available_females > available_males:
-                current_sex = 0
-                while current_sex < available_males:
-                    number_of_children_produced, boys, girls = await Breed()
-                    males += boys
-                    females += girls
-                    population += number_of_children_produced
-                    cache_males.append(boys)
-                    cache_females.append(girls)
-                    print(number_of_children_produced)
-                    current_sex += 1
             else:
                 current_sex = 0
-                while current_sex < available_males:
+                while current_sex < available_females:
                     number_of_children_produced, boys, girls = await Breed()
                     males += boys
                     females += girls
@@ -74,15 +67,20 @@ async def startGame():
                     cache_females.append(girls)
                     print(number_of_children_produced)
                     current_sex += 1
+            second_cache_females.append(cache_females[0])
+            third_cache_females.append(second_cache_females[0])
+            available_females += third_cache_females[0]
+            third_cache_females.pop(0)
+
             
-            print(f"Males: {males}",f"Females: {females}, Total Population: {population}")
+            print(f"Males: {males}",f"Females: {females}, Total Population: {population}, Year: {years}")
             print(f'Available males: {available_males}, Available females: {available_females}')
-            await asyncio.sleep(.5)
+            await asyncio.sleep(.3)
             years += 1
             print('---1 year passed---')
-        if years < 20:
+        if years < 18:
             print(f"Males: {males}",f"Females: {females}, Total Population: {population}")
-            await asyncio.sleep(.5)
+            await asyncio.sleep(.2)
             years += 1
             print('---1 year passed---')        
             
