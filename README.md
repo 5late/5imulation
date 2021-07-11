@@ -4,6 +4,7 @@
 
 ## Rules
 
+- The simulation stops at 1 000 000 people
 - At age 18 people start breeding
 - People constantly breed unless:
     - They are under 18
