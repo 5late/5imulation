@@ -34,11 +34,11 @@ async def startGame():
     second_cache_females = []
     third_cache_females = []
 
-    while population < 10000:
+    while population < 1000000:
         if years >= 18:
             if years % 80 == 0:
                 global number_of_dead_people
-                number_of_dead_people = random.randint(0, 20)
+                number_of_dead_people = round(population * 0.007)
                 available_females -= (number_of_dead_people // 2)
                 available_males -= (number_of_dead_people // 2)
                 print(f'Dying People: {number_of_dead_people}')
@@ -58,7 +58,7 @@ async def startGame():
                     population += number_of_children_produced
                     cache_males.append(available_males // 2)
                     cache_females.append(available_males // 2)
-                    print(number_of_children_produced)
+                    #print(number_of_children_produced)
             else:
                 for i in range(available_males):
                     number_of_children_produced, boys, girls = await Breed()
@@ -67,7 +67,7 @@ async def startGame():
                     population += number_of_children_produced
                     cache_males.append(available_males // 2)
                     cache_females.append(available_males // 2)
-                    print(number_of_children_produced)
+                    #print(number_of_children_produced)
             second_cache_females.append(cache_females[0])
             third_cache_females.append(second_cache_females[0])
             available_females += third_cache_females[0]
@@ -76,7 +76,7 @@ async def startGame():
             
             print(f"Males: {males}",f"Females: {females}, Total Population: {population}, Year: {years}")
             print(f'Available males: {available_males}, Available females: {available_females}.')
-            await asyncio.sleep(.2)
+            await asyncio.sleep(.15)
             years += 1
             print('---1 year passed---')
         if years < 18:
