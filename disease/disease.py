@@ -7,7 +7,6 @@ MAX_NUMBER_OF_PEOPLE_MET_DAILY = 15
 POPULATION = int(1000000)
 ROUND_TO = int(len(str(POPULATION)[1:]))
 DAYS = 7
-INFECTED_PEOPLE = 0
 
 async def Infect(infected_population):
     number_of_people_met = int(random.randint(MIN_NUMBER_OF_PEOPLE_MET_DAILY, MAX_NUMBER_OF_PEOPLE_MET_DAILY))
@@ -17,7 +16,6 @@ async def Infect(infected_population):
             infect_chance_whole_number = int(str(chance_of_being_infected).split('.')[1])# * int(f"1{(ROUND_TO - 1) * '0'}"))
         else:
             infect_chance_whole_number = int(str(chance_of_being_infected).split('.')[0])# * int(f"1{(ROUND_TO - 1) * '0'}"))
-        #print((infect_chance_whole_number, chance_of_being_infected))
         for i in range(number_of_people_met):
             calculate_infection = random.randint(0, POPULATION)
             if calculate_infection < infect_chance_whole_number:
@@ -35,18 +33,20 @@ async def startSimulation():
     infected_population = 2
     healthy_population = POPULATION
     cache = []
+    total_people_met = 0
     for day in range(DAYS):
-        for i in range(healthy_population):
+        for i in range(POPULATION):
             is_infected, number_of_people_met = await Infect(infected_population)
+            total_people_met += number_of_people_met
             if is_infected:
                 infected_population += 1
                 healthy_population -= 1
-            #print(f'Number of people met: {number_of_people_met}, Infected: {is_infected}')
         cache.append(infected_population)
         if day == 0:
             print(f'Infected today: {cache[0]}')
         else:
-            print(f'Infected today: {cache[day] - cache[day -1]}, Total Infected: {cache[day]}')
+            print(f'Infected today: {cache[day] - cache[day -1]}, Total Infected: {cache[day]}, Total Healthy: {healthy_population}')
+        print(f'{total_people_met} interactions overall')
         print('---1 day passed---')
         await asyncio.sleep(1)
 
