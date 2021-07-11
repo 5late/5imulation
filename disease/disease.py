@@ -13,9 +13,9 @@ async def Infect(infected_population):
     if number_of_people_met > 0:
         chance_of_being_infected = round(number_of_people_met *((int(infected_population) / POPULATION ) / CHANCE_OF_INFECTION), ROUND_TO)
         if str(chance_of_being_infected).split('.')[0] == "0":
-            infect_chance_whole_number = int(str(chance_of_being_infected).split('.')[1])# * int(f"1{(ROUND_TO - 1) * '0'}"))
+            infect_chance_whole_number = int(str(chance_of_being_infected).split('.')[1])
         else:
-            infect_chance_whole_number = int(str(chance_of_being_infected).split('.')[0])# * int(f"1{(ROUND_TO - 1) * '0'}"))
+            infect_chance_whole_number = int(str(chance_of_being_infected).split('.')[0])
         for i in range(number_of_people_met):
             calculate_infection = random.randint(0, POPULATION)
             if calculate_infection < infect_chance_whole_number:
