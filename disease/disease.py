@@ -4,7 +4,7 @@ import asyncio
 CHANCE_OF_INFECTION = 34
 MIN_NUMBER_OF_PEOPLE_MET_DAILY = 0
 MAX_NUMBER_OF_PEOPLE_MET_DAILY = 15
-POPULATION = 100
+POPULATION = 1000
 DAYS = 7
 
 async def Infect():
@@ -26,15 +26,21 @@ async def startSimulation():
     global infected_population
     infected_population = 0
     healthy_population = POPULATION
-    for i in range(DAYS):
+    cache = []
+    for day in range(DAYS):
         for i in range(healthy_population):
             is_infected, number_of_people_met = await Infect()
             if is_infected:
                 infected_population += 1
                 healthy_population -= 1
             print(f'Number of people met: {number_of_people_met}, Infected: {is_infected}')
-        await asyncio.sleep(1)
+        cache.append(infected_population)
+        if day == 0:
+            print(f'Infected today: {cache[0]}')
+        else:
+            print(f'Infected today: {cache[day] - cache[day -1]}, Total Infected: {cache[day]}')
         print('---1 day passed---')
+        await asyncio.sleep(1)
 
 def main():
     loop = asyncio.new_event_loop()
