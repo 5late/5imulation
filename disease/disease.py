@@ -7,7 +7,7 @@ MAX_NUMBER_OF_PEOPLE_MET_DAILY = 15
 POPULATION = int(1000000)
 ROUND_TO = int(len(str(POPULATION)[1:]))
 DAYS = 10
-RECOVERY_DAYS = 5
+RECOVERY_DAYS = 2
 
 async def Infect(infected_population):
     number_of_people_met = int(random.randint(MIN_NUMBER_OF_PEOPLE_MET_DAILY, MAX_NUMBER_OF_PEOPLE_MET_DAILY))
@@ -60,7 +60,6 @@ def main():
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
     loop.run_until_complete(startSimulation())
-    #print('YEARS PASSED: ' + str(years))
-    print('Number of Infections: ' + str(infected_population))
+    print('Total Number of Infections: ' + str(infected_population))
 
 main()
