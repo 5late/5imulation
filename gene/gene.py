@@ -31,7 +31,7 @@ async def startSimulation():
     population = POPULATION
     females = 1
     males = 2
-    available_females = 0 
+    available_females = 0
     number_of_people_gene = 0
     global years
     years = 18
@@ -44,5 +44,13 @@ async def startSimulation():
         population += number_of_children
         if has_gene:
             number_of_people_gene += 1
+        print(number_of_people_gene)
     print(population)
-            
+
+def main():
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(startSimulation())
+    print('YEARS PASSED: ' + str(years))
+
+main()
