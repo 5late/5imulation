@@ -5,6 +5,8 @@ import time
 async def useExtra(extra, demand):
   if extra > demand:
     extra = int(extra - demand)
+  else:
+    extra = extra
   cost = 0
   return extra, cost
 
@@ -60,9 +62,9 @@ async def startMoney():
     if day % 60 == 0:
       new_cost = int(input("Please set a new price: "))
       if new_cost > (price_per_ducky * 2):
-        demand = (demand * 0.45)
+        demand = int(demand * 0.45)
       elif new_cost > (price_per_ducky * 3):
-        demand = (demand * 0.75)
+        demand = int(demand * 0.75)
       price_per_ducky = new_cost
     if day == 181:
       print(f"Simulation over. Total duckys sold: {sold}. Extra Produced: {extra}. Final Balance: ${await human(money)}.")
@@ -95,39 +97,43 @@ async def startMoney():
       money += net_income
       sold += demand
       print(f"Closing Money: {await human(money)}")
+
       if money > rent_and_utils and price_per_ducky >= 4 and demand >= 250:
-        price_per_ducky -= 0.25
-        demand += int(demand * 0.1)
+        price_per_ducky += int(price_per_ducky * 0.25)
+        cost_of_production += int(cost_of_production * 0.3)
+        demand -= int(demand * 0.25)
       elif money < rent_and_utils and price_per_ducky >= 4:
         price_per_ducky -= 0.5
         cost_of_production -= 0.25
-        demand += int(demand * 0.1)
+        demand += int(demand * 0.25)
+
     elif demand > produced_duckys:
-      extra += (produced_duckys - demand)
+      extra += int(produced_duckys - demand)
       number_of_workers += 5
-      rate_of_production = number_of_workers * 15
+      rate_of_production = int(number_of_workers * 15)
       produced_duckys += rate_of_production * 1
       cost_of_production += 0.25
       cost_of_labor_per_ducky += 0.25
       price_per_ducky += 1
-      cost_of_produced_duckys = produced_duckys * (cost_of_labor_per_ducky + cost_of_production)
+      cost_of_produced_duckys = int(produced_duckys * (cost_of_labor_per_ducky + cost_of_production))
 
       gross_income = demand * price_per_ducky
       net_income = gross_income - cost_of_produced_duckys
 
       print(f"HIGH DEMAND: {demand}. Produced: {produced_duckys}. Gross income: {await human(gross_income)}. Net income: {await human(net_income)}. Costs: {await human(cost_of_produced_duckys)}. Price: {await human(price_per_ducky)}.")
+
       money += net_income
       sold += produced_duckys
       print(f"Closing Money: {await human(money)}.")
       demand -= int(demand * 0.3)
       if money > rent_and_utils and price_per_ducky > 4 and demand >= 100:
-        price_per_ducky -= 0.25
-        demand += int(demand * 0.1)
+        price_per_ducky += int(price_per_ducky * 0.25)
+        demand -= int(demand * 0.25)
       elif money < rent_and_utils:
-        price_per_ducky += 0.5
+        price_per_ducky -= int(price_per_ducky * 0.25)
         cost_of_production -= 0.25
-        demand -= int(demand * 0.1)
-    demand += random.randint(0, int(demand // 10)) + 5
+        demand += int(demand * 0.25)
+    demand += int(random.randint(0, int(demand // 8)) + 5)
     day += 1
 
 def main():
